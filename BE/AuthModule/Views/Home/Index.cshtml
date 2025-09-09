@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title mb-0">Welcome to Homepage</h2>
+                </div>
+                <div class="card-body">
+                    <div id="authenticatedContent" style="display: none;">
+                        <p class="card-text">You have successfully logged in!</p>
+                        <p class="card-text">This is a protected page that requires authentication.</p>
+                        
+                    </div>
+                    
+                    <div id="unauthenticatedContent">
+                        <p class="card-text">Welcome to Homepage!</p>
+                        <p class="card-text">Please login to access protected features.</p>
+                        
+                        <div class="mt-4">
+                            <a href="/Account/Login" class="btn btn-primary me-2">Login</a>
+                            <a href="/Account/Register" class="btn btn-success">Register</a>
+                        </div>
+                    </div>
+                    
+                    
+                    <div id="alertContainer" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Check if user is authenticated on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('authToken');
+            if (token) {
+                // Show authenticated content
+                document.getElementById('authenticatedContent').style.display = 'block';
+                document.getElementById('unauthenticatedContent').style.display = 'none';
+            } else {
+                // Redirect to login if not authenticated
+                window.location.href = '/Account/Login';
+            }
+        });
+        
+        
+        
+        function showAlert(type, message) {
+            const alertContainer = document.getElementById('alertContainer');
+            alertContainer.innerHTML = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+        }
+    </script>
+}
